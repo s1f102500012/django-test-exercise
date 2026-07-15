@@ -49,6 +49,7 @@
         </ul>
         <div class="task-actions">
           <a class="task-link-button" href="{% url 'detail' task.id %}">詳細を見る</a>
+          <a class="task-link-button" href="{% url 'toggle' task.id %}">{% if task.completed %}未完了にする{% else %}完了にする{% endif %}</a>
         </div>
       </div>
       {% endfor %}
