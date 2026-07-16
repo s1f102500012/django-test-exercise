@@ -148,6 +148,17 @@ class TodoViewTestCase(TestCase):
             task.due_at, timezone.make_aware(datetime(2024, 8, 1, 12, 0, 0))
         )
 
+    def test_update_post_empty_due(self):
+        task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task.save()
+        client = Client()
+        data = {'title': 'updated task', 'due_at': ''}
+        response = client.post('/{}/update'.format(task.pk), data)
+        self.assertEqual(response.status_code, 302)
+        task = Task.objects.get(pk=task.pk)
+        self.assertEqual(task.title, 'updated task')
+        self.assertEqual(task.due_at, None)
+
     def test_update_post_fail(self):
         client = Client()
         data = {'title': 'updated task', 'due_at': '2024-08-01 12:00:00'}
