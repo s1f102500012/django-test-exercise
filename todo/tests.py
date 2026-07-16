@@ -153,3 +153,13 @@ class TodoViewTestCase(TestCase):
         data = {'title': 'updated task', 'due_at': '2024-08-01 12:00:00'}
         response = client.post('/1/update', data)
         self.assertEqual(response.status_code, 404)
+
+    def test_toggle_complete(self):
+        task = Task(title='task1')
+        task.save()
+        client = Client()
+        response = client.post('/{}/toggle-complete'.format(task.pk), {'next': '/'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
+        task = Task.objects.get(pk=task.pk)
+        self.assertTrue(task.completed)

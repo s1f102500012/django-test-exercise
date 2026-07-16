@@ -28,6 +28,42 @@
         </div>
       </form>
 
+      {% if celebrate %}
+      <div class="celebration" aria-hidden="true">
+        <div class="celebration-text">おめでとう！</div>
+        <span class="confetti confetti-1 confetti-type-a"></span>
+        <span class="confetti confetti-2 confetti-type-a"></span>
+        <span class="confetti confetti-3 confetti-type-a"></span>
+        <span class="confetti confetti-4 confetti-type-a"></span>
+        <span class="confetti confetti-5 confetti-type-a"></span>
+        <span class="confetti confetti-6 confetti-type-b"></span>
+        <span class="confetti confetti-7 confetti-type-a"></span>
+        <span class="confetti confetti-8 confetti-type-b"></span>
+        <span class="confetti confetti-9 confetti-type-a"></span>
+        <span class="confetti confetti-10 confetti-type-b"></span>
+        <span class="confetti confetti-11 confetti-type-a"></span>
+        <span class="confetti confetti-12 confetti-type-b"></span>
+        <span class="confetti confetti-13 confetti-type-a"></span>
+        <span class="confetti confetti-14 confetti-type-b"></span>
+        <span class="confetti confetti-15 confetti-type-a"></span>
+        <span class="confetti confetti-16 confetti-type-b"></span>
+        <span class="confetti confetti-17 confetti-type-a"></span>
+        <span class="confetti confetti-18 confetti-type-b"></span>
+        <span class="confetti confetti-19 confetti-type-a"></span>
+        <span class="confetti confetti-20 confetti-type-b"></span>
+        <span class="confetti confetti-21 confetti-type-c"></span>
+        <span class="confetti confetti-22 confetti-type-c"></span>
+        <span class="confetti confetti-23 confetti-type-c"></span>
+        <span class="confetti confetti-24 confetti-type-c"></span>
+        <span class="confetti confetti-25 confetti-type-c"></span>
+        <span class="confetti confetti-26 confetti-type-c"></span>
+        <span class="confetti confetti-27 confetti-type-c"></span>
+        <span class="confetti confetti-28 confetti-type-c"></span>
+        <span class="confetti confetti-29 confetti-type-c"></span>
+        <span class="confetti confetti-30 confetti-type-c"></span>
+      </div>
+      {% endif %}
+
       <div class="sort-links">
         <a href="{% url 'index' %}?order=due">Sort by Due Date</a> |
         <a href="{% url 'index' %}?order=post">Sort by Posted Date</a>
@@ -49,6 +85,13 @@
         </ul>
         <div class="task-actions">
           <a class="task-link-button" href="{% url 'detail' task.id %}">詳細を見る</a>
+          <form action="{% url 'toggle_complete' task.id %}" method="post" class="inline-toggle-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{% url 'index' %}?celebrated=1">
+            <button type="submit" class="toggle-button">
+              {% if task.completed %}未完了に戻す{% else %}完了する{% endif %}
+            </button>
+          </form>
         </div>
       </div>
       {% endfor %}

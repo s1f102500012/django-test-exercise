@@ -169,3 +169,153 @@ button:hover {
   background: #e0e7ff;
   transform: translateY(-1px);
 }
+
+.inline-toggle-form {
+  display: inline-block;
+}
+
+.toggle-button {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.celebration-text {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3.6rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 95, 109, 0.95), 0 0 30px rgba(255, 207, 92, 0.95), 0 0 42px rgba(59, 130, 246, 0.9);
+  letter-spacing: 0.16em;
+  animation: text-pop 2.6s ease-out forwards;
+  z-index: 21;
+}
+
+.confetti {
+  position: absolute;
+  top: -28px;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.95);
+  animation: float-down 4.2s ease-in forwards;
+  opacity: 0.98;
+}
+
+.confetti-type-a {
+  width: 24px;
+  height: 24px;
+  clip-path: polygon(50% 0%, 61% 35%, 100% 50%, 61% 65%, 50% 100%, 39% 65%, 0% 50%, 39% 35%);
+  background: linear-gradient(135deg, #ff5f6d, #ffcf5c);
+  box-shadow: 0 0 28px rgba(255, 95, 109, 0.8);
+}
+
+.confetti-type-b {
+  width: 20px;
+  height: 20px;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  background: linear-gradient(135deg, #4f46e5, #38bdf8);
+  box-shadow: 0 0 28px rgba(79, 70, 229, 0.8);
+}
+
+.confetti-type-c {
+  width: 17px;
+  height: 17px;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  background: linear-gradient(135deg, #8b5cf6, #f472b6);
+  box-shadow: 0 0 28px rgba(139, 92, 246, 0.8);
+}
+
+.confetti::before,
+.confetti::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: inherit;
+}
+
+.confetti::before {
+  transform: rotate(45deg);
+}
+
+.confetti::after {
+  transform: rotate(-45deg);
+}
+
+.confetti-1 { left: 2%; animation-delay: 1s; }
+.confetti-2 { left: 7%; animation-delay: 2s; }
+.confetti-3 { left: 12%; animation-delay: 1s; }
+.confetti-4 { left: 17%; animation-delay: 3s; }
+.confetti-5 { left: 22%; animation-delay: 1.4s; }
+.confetti-6 { left: 27%; animation-delay: 1.8s; }
+.confetti-7 { left: 32%; animation-delay: 1.2s; }
+.confetti-8 { left: 37%; animation-delay: 1.5s; }
+.confetti-9 { left: 42%; animation-delay: 0.5s; }
+.confetti-10 { left: 47%; animation-delay: 0.7s; }
+.confetti-11 { left: 52%; animation-delay: 0.5s; }
+.confetti-12 { left: 57%; animation-delay: 0.2s; }
+.confetti-13 { left: 62%; animation-delay: 0s; }
+.confetti-14 { left: 67%; animation-delay: 0s; }
+.confetti-15 { left: 72%; animation-delay: 0.1s; }
+.confetti-16 { left: 77%; animation-delay: 0.6s; }
+.confetti-17 { left: 82%; animation-delay: 1.4s; }
+.confetti-18 { left: 87%; animation-delay: 1.2s; }
+.confetti-19 { left: 92%; animation-delay: 1s; }
+.confetti-20 { left: 97%; animation-delay: 2s; }
+.confetti-21 { left: 5%; animation-delay: 1.5s; }
+.confetti-22 { left: 15%; animation-delay: 1.3s; }
+.confetti-23 { left: 25%; animation-delay: 1.6s; }
+.confetti-24 { left: 35%; animation-delay: 2.2s; }
+.confetti-25 { left: 45%; animation-delay: 1.2s; }
+.confetti-26 { left: 55%; animation-delay: 1.63s; }
+.confetti-27 { left: 65%; animation-delay: 1.9s; }
+.confetti-28 { left: 75%; animation-delay: 2s; }
+.confetti-29 { left: 85%; animation-delay: 1.2s; }
+.confetti-30 { left: 95%; animation-delay: 1s; }
+
+@keyframes float-down {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.2) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  45% {
+    transform: translate3d(0, 28vh, 0) scale(1.25) rotate(200deg);
+  }
+  100% {
+    transform: translate3d(0, 110vh, 0) scale(1.05) rotate(760deg);
+    opacity: 0;
+  }
+}
+
+@keyframes text-pop {
+  0% {
+    transform: translateX(-50%) scale(0.7);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(1.2);
+    opacity: 0;
+  }
+}
