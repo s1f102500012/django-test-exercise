@@ -251,6 +251,17 @@ class TodoViewTestCase(TestCase):
             ),
         )
 
+    def test_update_post_empty_due(self):
+        task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task.save()
+        client = Client()
+        data = {'title': 'updated task', 'due_at': ''}
+        response = client.post('/{}/update'.format(task.pk), data)
+        self.assertEqual(response.status_code, 302)
+        task = Task.objects.get(pk=task.pk)
+        self.assertEqual(task.title, 'updated task')
+        self.assertEqual(task.due_at, None)
+
     def test_update_post_fail(self):
         client = Client()
         data = {
@@ -302,5 +313,34 @@ class TodoViewTestCase(TestCase):
     def test_delete_fail(self):
         client = Client()
         response = client.get('/1/delete')
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_toggle_success(self):
+        task = Task(
+            title='task1',
+            due_at=timezone.make_aware(
+                datetime(2024, 7, 1)
+            ),
+        )
+        task.save()
+
+        client = Client()
+        response = client.post(
+            '/{}/toggle'.format(task.pk)
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            '/{}/'.format(task.pk),
+        )
+
+        task = Task.objects.get(pk=task.pk)
+        self.assertTrue(task.completed)
+
+    def test_toggle_fail(self):
+        client = Client()
+        response = client.post('/1/toggle')
 
         self.assertEqual(response.status_code, 404)

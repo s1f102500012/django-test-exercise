@@ -5,32 +5,47 @@
   <head>
     <title>To Do Application</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="INIAD">
     <link rel="stylesheet" href="{% static 'todo/style.css' %}">
   </head>
 
   <body>
     <div class="container">
+      <a class="back-link" href="{% url 'index' %}">&larr; Back to list</a>
+
       <div class="card">
         <h1 class="page-title">{{ task.title }}</h1>
 
-        <ul class="task-meta">
-          <li>Posted at: {{ task.posted_at }}</li>
+        <ul class="meta-list">
+          <li>
+            <span class="meta-label">Status</span>
+            {% if task.completed %}
+            <span class="badge is-done">Done</span>
+            {% else %}
+            <span class="badge">Open</span>
+            {% endif %}
+          </li>
+          <li>
+            <span class="meta-label">Posted at</span>
+            <span>{{ task.posted_at|date:"Y/m/d H:i" }}</span>
+          </li>
           {% if task.due_at %}
-          <li>Due at: {{ task.due_at }}</li>
-          {% endif %}
-          {% if task.completed %}
-          <li>Status: Completed</li>
-          {% else %}
-          <li>Status: Not Completed</li>
+          <li>
+            <span class="meta-label">Due at</span>
+            <span>{{ task.due_at|date:"Y/m/d H:i" }}</span>
+          </li>
           {% endif %}
         </ul>
 
-        <div class="task-actions">
-          <a href="{% url 'index' %}">Top</a>
+        <div class="actions">
+          <form class="check-form" action="{% url 'toggle' task.id %}" method="post">
+            {% csrf_token %}
+            <button class="link-button" type="submit">{% if task.completed %}Reopen{% else %}Complete{% endif %}</button>
+          </form>
           <a href="{% url 'update' task.id %}">Edit</a>
-          <a href="{% url 'toggle' task.id %}">{% if task.completed %}未完了にする{% else %}完了にする{% endif %}</a>
-          <a href="{% url 'delete' task.id %}">Delete</a>
+          <a class="link-danger" href="{% url 'delete' task.id %}"
+             onclick="return confirm('Delete this task?')">Delete</a>
         </div>
       </div>
     </div>
