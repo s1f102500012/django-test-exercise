@@ -174,8 +174,7 @@ class TodoViewTestCase(TestCase):
         client = Client()
         response = client.get('/{}/toggle'.format(task.pk))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/')
-        task = Task.objects.get(pk=task.pk)
+        self.assertEqual(response.url, '/{}/'.format(task.pk))
         self.assertTrue(task.completed)
 
     def test_toggle_fail(self):
