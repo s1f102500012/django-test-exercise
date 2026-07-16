@@ -5,6 +5,7 @@
   <head>
     <title>To Do Application</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="INIAD">
     <link rel="stylesheet" href="{% static 'todo/style.css' %}">
   </head>
@@ -13,14 +14,15 @@
     <div class="container">
       <h1 class="page-title">Sample To Do Application</h1>
       <p class="subtitle">You can submit tasks from the following form.</p>
+
       <form class="card" action="{% url 'index' %}" method="post">
         {% csrf_token %}
         <div>
-          <label for="titleInput">Title</label><br>
+          <label for="titleInput">Title</label>
           <input id="titleInput" name="title" type="text" placeholder="Input title">
         </div>
         <div>
-          <label for="dueInput">Due at:</label><br>
+          <label for="dueInput">Due at</label>
           <input id="dueInput" name="due_at" type="datetime-local">
         </div>
         <div>
@@ -29,29 +31,37 @@
       </form>
 
       <div class="sort-links">
-        <a href="{% url 'index' %}?order=due">Sort by Due Date</a> |
-        <a href="{% url 'index' %}?order=post">Sort by Posted Date</a>
+        <span>Sort by</span>
+        <a {% if request.GET.order == 'due' %}class="active" {% endif %}href="{% url 'index' %}?order=due">Due Date</a>
+        <a {% if request.GET.order != 'due' %}class="active" {% endif %}href="{% url 'index' %}?order=post">Posted Date</a>
+        <span class="task-count">{{ tasks|length }} task{{ tasks|length|pluralize }}</span>
       </div>
 
       {% for task in tasks %}
-      <div class="task-item">
-        <h2><a class="task-title-link" href="{% url 'detail' task.id %}">{{ task.title }}</a></h2>
-        <ul class="task-meta">
-          <li>Posted at: {{ task.posted_at }}</li>
-          {% if task.due_at %} 
-          <li>Due at: {{ task.due_at }}</li>
-          {% endif %}
-          {% if task.completed %} 
-          <li>Status: Completed</li>
-          {% else %}
-          <li>Status: Not Completed</li>
-          {% endif %}
-        </ul>
-        <div class="task-actions">
-          <a class="task-link-button" href="{% url 'detail' task.id %}">詳細を見る</a>
-          <a class="task-link-button" href="{% url 'toggle' task.id %}">{% if task.completed %}未完了にする{% else %}完了にする{% endif %}</a>
+      <div class="task-item{% if task.completed %} is-done{% endif %}">
+        <form class="check-form" action="{% url 'toggle' task.id %}?next=list" method="post">
+          {% csrf_token %}
+          <button class="task-check" type="submit"
+                  aria-label="{% if task.completed %}Reopen{% else %}Complete{% endif %} {{ task.title }}"
+                  title="{% if task.completed %}Reopen{% else %}Complete{% endif %}"></button>
+        </form>
+        <div class="task-body">
+          <h2 class="task-title"><a href="{% url 'detail' task.id %}">{{ task.title }}</a></h2>
+          <p class="task-dates">
+            <span>Posted {{ task.posted_at|date:"Y/m/d H:i" }}</span>
+            {% if task.due_at %}
+            <span>Due {{ task.due_at|date:"Y/m/d H:i" }}</span>
+            {% endif %}
+          </p>
         </div>
+        {% if task.completed %}
+        <span class="badge is-done">Done</span>
+        {% else %}
+        <span class="badge">Open</span>
+        {% endif %}
       </div>
+      {% empty %}
+      <p class="empty-note">No tasks yet. Add your first one above.</p>
       {% endfor %}
     </div>
   </body>
