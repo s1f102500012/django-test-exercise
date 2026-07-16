@@ -6,25 +6,6 @@ from django.utils.timezone import make_aware
 from todo.models import Task
 
 
-def toggle_complete(request, task_id):
-    try:
-        task = Task.objects.get(pk=task_id)
-    except Task.DoesNotExist:
-        raise Http404("Task does not exist")
-
-    was_completed = task.completed
-    task.completed = not task.completed
-    task.save()
-
-    next_url = request.POST.get('next', '/')
-    if not was_completed and task.completed:
-        request.session['celebrate'] = True
-    else:
-        request.session['celebrate'] = False
-
-    return redirect(next_url)
-
-
 def index(request):
     if request.method == 'POST':
         due_at = None
@@ -36,11 +17,9 @@ def index(request):
         tasks = Task.objects.order_by('due_at')
     else:
         tasks = Task.objects.order_by('-posted_at')
-
-    celebrate = request.session.pop('celebrate', False)
     context = {
         'tasks': tasks,
-        'celebrate': celebrate,
+        'celebrate': request.session.pop('celebrate', False),
     }
     return render(request, 'todo/index.html', context)
 
@@ -90,6 +69,8 @@ def toggle_complete(request, task_id):
     if request.method == 'POST':
         task.completed = not task.completed
         task.save()
+        if task.completed:
+            request.session['celebrate'] = True
     if request.GET.get('next') == 'list':
         return redirect(index)
     return redirect(detail, task_id)

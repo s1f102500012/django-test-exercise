@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -12,155 +11,74 @@
   </head>
 
   <body>
+    {% if celebrate %}
+    <div class="celebration" aria-hidden="true">
+      <p class="celebration-text">Nice work!</p>
+      <span class="confetti c1"></span>
+      <span class="confetti c2"></span>
+      <span class="confetti c3"></span>
+      <span class="confetti c4"></span>
+      <span class="confetti c5"></span>
+      <span class="confetti c6"></span>
+      <span class="confetti c7"></span>
+      <span class="confetti c8"></span>
+      <span class="confetti c9"></span>
+      <span class="confetti c10"></span>
+      <span class="confetti c11"></span>
+      <span class="confetti c12"></span>
+    </div>
+    {% endif %}
     <div class="container">
       <h1 class="page-title">Sample To Do Application</h1>
       <p class="subtitle">You can submit tasks from the following form.</p>
 
       <form class="card" action="{% url 'index' %}" method="post">
         {% csrf_token %}
-
         <div>
           <label for="titleInput">Title</label>
-          <input
-            id="titleInput"
-            name="title"
-            type="text"
-            placeholder="Input title"
-          >
+          <input id="titleInput" name="title" type="text" placeholder="Input title">
         </div>
-
         <div>
           <label for="dueInput">Due at</label>
-          <input
-            id="dueInput"
-            name="due_at"
-            type="datetime-local"
-          >
+          <input id="dueInput" name="due_at" type="datetime-local">
         </div>
-
         <div>
           <button type="submit">Submit</button>
         </div>
       </form>
 
-      {% if celebrate %}
-      <div class="celebration" aria-hidden="true">
-        <div class="celebration-text">おめでとう！</div>
-
-        <span class="confetti confetti-1 confetti-type-a"></span>
-        <span class="confetti confetti-2 confetti-type-a"></span>
-        <span class="confetti confetti-3 confetti-type-a"></span>
-        <span class="confetti confetti-4 confetti-type-a"></span>
-        <span class="confetti confetti-5 confetti-type-a"></span>
-        <span class="confetti confetti-6 confetti-type-b"></span>
-        <span class="confetti confetti-7 confetti-type-a"></span>
-        <span class="confetti confetti-8 confetti-type-b"></span>
-        <span class="confetti confetti-9 confetti-type-a"></span>
-        <span class="confetti confetti-10 confetti-type-b"></span>
-        <span class="confetti confetti-11 confetti-type-a"></span>
-        <span class="confetti confetti-12 confetti-type-b"></span>
-        <span class="confetti confetti-13 confetti-type-a"></span>
-        <span class="confetti confetti-14 confetti-type-b"></span>
-        <span class="confetti confetti-15 confetti-type-a"></span>
-        <span class="confetti confetti-16 confetti-type-b"></span>
-        <span class="confetti confetti-17 confetti-type-a"></span>
-        <span class="confetti confetti-18 confetti-type-b"></span>
-        <span class="confetti confetti-19 confetti-type-a"></span>
-        <span class="confetti confetti-20 confetti-type-b"></span>
-        <span class="confetti confetti-21 confetti-type-c"></span>
-        <span class="confetti confetti-22 confetti-type-c"></span>
-        <span class="confetti confetti-23 confetti-type-c"></span>
-        <span class="confetti confetti-24 confetti-type-c"></span>
-        <span class="confetti confetti-25 confetti-type-c"></span>
-        <span class="confetti confetti-26 confetti-type-c"></span>
-        <span class="confetti confetti-27 confetti-type-c"></span>
-        <span class="confetti confetti-28 confetti-type-c"></span>
-        <span class="confetti confetti-29 confetti-type-c"></span>
-        <span class="confetti confetti-30 confetti-type-c"></span>
-      </div>
-      {% endif %}
-
       <div class="sort-links">
         <span>Sort by</span>
-
-        <a
-          {% if request.GET.order == 'due' %}
-          class="active"
-          {% endif %}
-          href="{% url 'index' %}?order=due"
-        >
-          Due Date
-        </a>
-
-        <a
-          {% if request.GET.order != 'due' %}
-          class="active"
-          {% endif %}
-          href="{% url 'index' %}?order=post"
-        >
-          Posted Date
-        </a>
-
-        <span class="task-count">
-          {{ tasks|length }} task{{ tasks|length|pluralize }}
-        </span>
+        <a {% if request.GET.order == 'due' %}class="active" {% endif %}href="{% url 'index' %}?order=due">Due Date</a>
+        <a {% if request.GET.order != 'due' %}class="active" {% endif %}href="{% url 'index' %}?order=post">Posted Date</a>
+        <span class="task-count">{{ tasks|length }} task{{ tasks|length|pluralize }}</span>
       </div>
 
       {% for task in tasks %}
       <div class="task-item{% if task.completed %} is-done{% endif %}">
-
-        <form
-          class="check-form"
-          action="{% url 'toggle_complete' task.id %}"
-          method="post"
-        >
+        <form class="check-form" action="{% url 'toggle' task.id %}?next=list" method="post">
           {% csrf_token %}
-
-          <input
-            type="hidden"
-            name="next"
-            value="{% url 'index' %}"
-          >
-
-          <button
-            class="task-check"
-            type="submit"
-            aria-label="{% if task.completed %}Reopen{% else %}Complete{% endif %} {{ task.title }}"
-            title="{% if task.completed %}Reopen{% else %}Complete{% endif %}"
-          ></button>
+          <button class="task-check" type="submit"
+                  aria-label="{% if task.completed %}Reopen{% else %}Complete{% endif %} {{ task.title }}"
+                  title="{% if task.completed %}Reopen{% else %}Complete{% endif %}"></button>
         </form>
-
         <div class="task-body">
-          <h2 class="task-title">
-            <a href="{% url 'detail' task.id %}">
-              {{ task.title }}
-            </a>
-          </h2>
-
+          <h2 class="task-title"><a href="{% url 'detail' task.id %}">{{ task.title }}</a></h2>
           <p class="task-dates">
-            <span>
-              Posted {{ task.posted_at|date:"Y/m/d H:i" }}
-            </span>
-
+            <span>Posted {{ task.posted_at|date:"Y/m/d H:i" }}</span>
             {% if task.due_at %}
-            <span>
-              Due {{ task.due_at|date:"Y/m/d H:i" }}
-            </span>
+            <span>Due {{ task.due_at|date:"Y/m/d H:i" }}</span>
             {% endif %}
           </p>
         </div>
-
         {% if task.completed %}
         <span class="badge is-done">Done</span>
         {% else %}
         <span class="badge">Open</span>
         {% endif %}
       </div>
-
       {% empty %}
-      <p class="empty-note">
-        No tasks yet. Add your first one above.
-      </p>
+      <p class="empty-note">No tasks yet. Add your first one above.</p>
       {% endfor %}
     </div>
   </body>
