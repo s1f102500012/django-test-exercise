@@ -19,6 +19,7 @@ def index(request):
         tasks = Task.objects.order_by('-posted_at')
     context = {
         'tasks': tasks,
+        'celebrate': request.session.pop('celebrate', False),
     }
     return render(request, 'todo/index.html', context)
 
@@ -68,6 +69,8 @@ def toggle_complete(request, task_id):
     if request.method == 'POST':
         task.completed = not task.completed
         task.save()
+        if task.completed:
+            request.session['celebrate'] = True
     if request.GET.get('next') == 'list':
         return redirect(index)
     return redirect(detail, task_id)

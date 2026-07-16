@@ -365,3 +365,85 @@ button:hover {
 .back-link:hover {
   color: var(--accent);
 }
+
+/* ---------- completion celebration ---------- */
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.celebration-text {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  margin: 0;
+  padding: 10px 26px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  color: var(--accent);
+  font-size: 1.1rem;
+  font-weight: 700;
+  animation: celebrate-pop 2.2s ease-out forwards;
+}
+
+@keyframes celebrate-pop {
+  0% {
+    transform: translateX(-50%) translateY(8px) scale(0.9);
+    opacity: 0;
+  }
+  12%, 75% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-6px) scale(1);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  position: absolute;
+  top: -14px;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: confetti-fall 1.9s ease-in forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) rotate(540deg);
+    opacity: 0.2;
+  }
+}
+
+.confetti:nth-child(3n) { background: var(--accent); }
+.confetti:nth-child(3n + 1) { background: #d9a13b; }
+.confetti:nth-child(3n + 2) { background: var(--danger); }
+
+.c1 { left: 6%; animation-delay: 0.05s; }
+.c2 { left: 14%; animation-delay: 0.3s; }
+.c3 { left: 23%; animation-delay: 0.15s; }
+.c4 { left: 31%; animation-delay: 0.45s; }
+.c5 { left: 40%; animation-delay: 0s; }
+.c6 { left: 48%; animation-delay: 0.35s; }
+.c7 { left: 57%; animation-delay: 0.1s; }
+.c8 { left: 65%; animation-delay: 0.5s; }
+.c9 { left: 74%; animation-delay: 0.2s; }
+.c10 { left: 82%; animation-delay: 0.4s; }
+.c11 { left: 91%; animation-delay: 0.08s; }
+.c12 { left: 97%; animation-delay: 0.28s; }

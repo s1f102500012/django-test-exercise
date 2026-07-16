@@ -193,3 +193,23 @@ class TodoViewTestCase(TestCase):
         client = Client()
         response = client.post('/1/toggle')
         self.assertEqual(response.status_code, 404)
+
+    def test_toggle_celebrate_on_complete(self):
+        task = Task(title='task1')
+        task.save()
+        client = Client()
+        response = client.post('/{}/toggle?next=list'.format(task.pk))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
+        response = client.get('/')
+        self.assertTrue(response.context['celebrate'])
+        response = client.get('/')
+        self.assertFalse(response.context['celebrate'])
+
+    def test_toggle_no_celebrate_on_reopen(self):
+        task = Task(title='task1', completed=True)
+        task.save()
+        client = Client()
+        client.post('/{}/toggle?next=list'.format(task.pk))
+        response = client.get('/')
+        self.assertFalse(response.context['celebrate'])
