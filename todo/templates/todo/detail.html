@@ -29,6 +29,7 @@
         <div class="task-actions">
           <a href="{% url 'index' %}">Top</a>
           <a href="{% url 'update' task.id %}">Edit</a>
+          <a href="{% url 'toggle' task.id %}">{% if task.completed %}未完了にする{% else %}完了にする{% endif %}</a>
           <a href="{% url 'delete' task.id %}">Delete</a>
         </div>
       </div>
