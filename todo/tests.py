@@ -167,3 +167,18 @@ class TodoViewTestCase(TestCase):
         client = Client()
         response = client.get('/1/delete')
         self.assertEqual(response.status_code, 404)
+
+    def test_toggle_success(self):
+        task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task.save()
+        client = Client()
+        response = client.post('/{}/toggle'.format(task.pk))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/{}/'.format(task.pk))
+        task = Task.objects.get(pk=task.pk)
+        self.assertTrue(task.completed)
+
+    def test_toggle_fail(self):
+        client = Client()
+        response = client.post('/1/toggle')
+        self.assertEqual(response.status_code, 404)
